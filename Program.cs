@@ -11,36 +11,36 @@ class PacketSniffer
 
     static void Main()
     {
-        Console.WriteLine("=================================");
-        Console.WriteLine("      Packet Sniffer Tool        ");
-        Console.WriteLine("=================================\n");
-
-        ListNetworkInterfaces();
-        Console.Write("Enter the number of the network interface to listen on: ");
-        int choice = int.Parse(Console.ReadLine() ?? "1");
-
-        var selectedInterface = NetworkInterface.GetAllNetworkInterfaces()[choice - 1];
-        Console.WriteLine($"You selected: {selectedInterface.Name} - {selectedInterface.Description}");
-
-        string ipAddress = selectedInterface.GetIPProperties().UnicastAddresses
-            .FirstOrDefault(ip => ip.Address.AddressFamily == AddressFamily.InterNetwork)?.Address.ToString()
-            ?? "127.0.0.1";
-
-        Console.WriteLine("\nSelect the protocol to filter:");
-        Console.WriteLine("1. All Protocols");
-        Console.WriteLine("2. TCP");
-        Console.WriteLine("3. UDP");
-        Console.WriteLine("4. ICMP");
-        Console.Write("Enter your choice (1-4): ");
-        int protocolChoice = int.Parse(Console.ReadLine() ?? "1");
-
-        try
+        while (true)  // Loop to show the main menu
         {
-            StartSniffing(ipAddress, protocolChoice);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
+            Console.WriteLine("=================================");
+            Console.WriteLine("      Packet Sniffer Tool        ");
+            Console.WriteLine("=================================\n");
+            Console.WriteLine("1. Start Packet Sniffing");
+            Console.WriteLine("2. View Session Log");
+            Console.WriteLine("3. Reset Session Log");
+            Console.WriteLine("4. Exit");
+            Console.Write("Choose an option (1-4): ");
+            string choice = Console.ReadLine() ?? "4";
+
+            switch (choice)
+            {
+                case "1":
+                    StartPacketSniffing();
+                    break;
+                case "2":
+                    DisplaySessionLog();
+                    break;
+                case "3":
+                    ResetSessionLog();
+                    break;
+                case "4":
+                    Console.WriteLine("Exiting program...");
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Please select 1-4.");
+                    break;
+            }
         }
     }
 
