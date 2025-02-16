@@ -146,6 +146,7 @@ class PacketSniffer
     {
         Console.WriteLine("Available Network Interfaces:");
         int index = 1;
+
         foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
         {
             Console.WriteLine($"{index}. {ni.Name} - {ni.Description} - {ni.NetworkInterfaceType}");
@@ -153,7 +154,7 @@ class PacketSniffer
         }
     }
 
-    static void DecodePacket(byte[] buffer, int bytesReceived, int protocolChoice)
+    static string DecodePacket(byte[] buffer, int bytesReceived, int protocolChoice)
     {
         var ipHeader = new byte[20];
         Array.Copy(buffer, 0, ipHeader, 0, 20);
@@ -170,38 +171,30 @@ class PacketSniffer
             _ => "Unknown"
         };
 
-        // Filter logic
-        if (protocolChoice != 1 && ((protocolChoice == 2 && protocol != 6) ||
-                                     (protocolChoice == 3 && protocol != 17) ||
-                                     (protocolChoice == 4 && protocol != 1)))
+        // Filter packets based on user choice
+        if (protocolChoice != 1 && protocolChoice != protocol)
         {
-            return;
+            return string.Empty;  // Skip this packet if it doesn't match the filter
         }
 
-        Console.ForegroundColor = protocol switch
-        {
-            1 => ConsoleColor.Yellow,
-            6 => ConsoleColor.Cyan,
-            17 => ConsoleColor.Green,
-            _ => ConsoleColor.White
-        };
-
-        Console.WriteLine("========== Packet Details ==========");
-        Console.WriteLine($"Source IP: {sourceIP}");
-        Console.WriteLine($"Destination IP: {destIP}");
-        Console.WriteLine($"Protocol: {protocolName}");
-        Console.WriteLine($"Packet Size: {bytesReceived} bytes");
+        var packetDetails = new StringBuilder();
+        packetDetails.AppendLine("========== Packet Details ==========");
+        packetDetails.AppendLine($"Source IP: {sourceIP}");
+        packetDetails.AppendLine($"Destination IP: {destIP}");
+        packetDetails.AppendLine($"Protocol: {protocolName}");
+        packetDetails.AppendLine($"Packet Size: {bytesReceived} bytes");
 
         if (protocol == 6 || protocol == 17)
         {
             int sourcePort = (buffer[20] << 8) + buffer[21];
             int destPort = (buffer[22] << 8) + buffer[23];
-            Console.WriteLine($"Source Port: {sourcePort}");
-            Console.WriteLine($"Destination Port: {destPort}");
+            packetDetails.AppendLine($"Source Port: {sourcePort}");
+            packetDetails.AppendLine($"Destination Port: {destPort}");
         }
 
-        Console.ResetColor();
-        Console.WriteLine("=====================================\n");
+        packetDetails.AppendLine("=====================================");
+        Console.WriteLine(packetDetails.ToString());
+        return packetDetails.ToString();
     }
 
 
