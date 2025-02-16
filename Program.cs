@@ -14,6 +14,14 @@ class PacketSniffer
         Console.Write("Enter the network interface to listen on (e.g., 127.0.0.1): ");
         string ipAddress = Console.ReadLine() ?? "127.0.0.1";
 
+        try
+        {
+            StartSniffing(ipAddress);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
 
 
     }
