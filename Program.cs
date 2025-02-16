@@ -3,9 +3,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Net.NetworkInformation;
+using System.Collections.Generic;
 
 class PacketSniffer
 {
+    static List<string> sessionLog = new List<string>();
+
     static void Main()
     {
         Console.WriteLine("=================================");
