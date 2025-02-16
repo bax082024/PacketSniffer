@@ -12,6 +12,13 @@ class PacketSniffer
         Console.WriteLine("      Packet Sniffer Tool        ");
         Console.WriteLine("=================================\n");
 
+        ListNetworkInterfaces();
+        Console.Write("Enter the number of the network interface to listen on: ");
+        int choice = int.Parse(Console.ReadLine() ?? "1");
+
+        var selectedInterface = NetworkInterface.GetAllNetworkInterfaces()[choice - 1];
+        Console.WriteLine($"You selected: {selectedInterface.Name} - {selectedInterface.Description}");
+
         Console.Write("Enter the network interface to listen on (e.g., 127.0.0.1): ");
         string ipAddress = Console.ReadLine() ?? "127.0.0.1";
 
