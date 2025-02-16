@@ -124,6 +124,12 @@ class PacketSniffer
         Console.WriteLine("=================================\n");
     }
 
+    static void ResetSessionLog()
+    {
+        sessionLog.Clear();
+        Console.WriteLine("Session log has been reset.\n");
+    }
+
     static void ListNetworkInterfaces()
     {
         Console.WriteLine("Available Network Interfaces:");
