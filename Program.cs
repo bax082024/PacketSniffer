@@ -130,6 +130,18 @@ class PacketSniffer
         Console.WriteLine("Session log has been reset.\n");
     }
 
+    static string GetProtocolName(int choice)
+    {
+        return choice switch
+        {
+            1 => "All Protocols",
+            2 => "TCP",
+            3 => "UDP",
+            4 => "ICMP",
+            _ => "Unknown"
+        };
+    }
+
     static void ListNetworkInterfaces()
     {
         Console.WriteLine("Available Network Interfaces:");
