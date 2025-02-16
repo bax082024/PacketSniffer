@@ -167,8 +167,8 @@ class PacketSniffer
 
         string sourceIP = $"{ipHeader[12]}.{ipHeader[13]}.{ipHeader[14]}.{ipHeader[15]}";
         string destIP = $"{ipHeader[16]}.{ipHeader[17]}.{ipHeader[18]}.{ipHeader[19]}";
-
         int protocol = ipHeader[9];
+
         string protocolName = protocol switch
         {
             1 => "ICMP",
@@ -177,30 +177,50 @@ class PacketSniffer
             _ => "Unknown"
         };
 
-        if (protocolChoice != 1 && protocolChoice != protocol)
+        if (protocolChoice != 1 && protocol != GetProtocolNumber(protocolChoice))
         {
             return string.Empty;
         }
 
-        var packetDetails = new StringBuilder();
-        packetDetails.AppendLine("========== Packet Details ==========");
-        packetDetails.AppendLine($"Source IP: {sourceIP}");
-        packetDetails.AppendLine($"Destination IP: {destIP}");
-        packetDetails.AppendLine($"Protocol: {protocolName}");
-        packetDetails.AppendLine($"Packet Size: {bytesReceived} bytes");
+        if (colorCodeEnabled)
+        {
+            if (protocol == 6) Console.ForegroundColor = ConsoleColor.Cyan;
+            else if (protocol == 17) Console.ForegroundColor = ConsoleColor.Yellow;
+            else if (protocol == 1) Console.ForegroundColor = ConsoleColor.Green;
+        }
+
+        StringBuilder log = new StringBuilder();
+        log.AppendLine("========== Packet Details ==========");
+        log.AppendLine($"Source IP: {sourceIP}");
+        log.AppendLine($"Destination IP: {destIP}");
+        log.AppendLine($"Protocol: {protocolName}");
+        log.AppendLine($"Packet Size: {bytesReceived} bytes");
 
         if (protocol == 6 || protocol == 17)
         {
             int sourcePort = (buffer[20] << 8) + buffer[21];
             int destPort = (buffer[22] << 8) + buffer[23];
-            packetDetails.AppendLine($"Source Port: {sourcePort}");
-            packetDetails.AppendLine($"Destination Port: {destPort}");
+            log.AppendLine($"Source Port: {sourcePort}");
+            log.AppendLine($"Destination Port: {destPort}");
         }
 
-        packetDetails.AppendLine("=====================================");
-        Console.WriteLine(packetDetails.ToString());
-        return packetDetails.ToString();
+        Console.WriteLine(log.ToString());
+        Console.ResetColor();
+        Console.WriteLine("=====================================\n");
+        return log.ToString();
     }
+
+    static int GetProtocolNumber(int choice)
+    {
+        return choice switch
+        {
+            2 => 6,   // TCP
+            3 => 17,  // UDP
+            4 => 1,   // ICMP
+            _ => 0
+        };
+    }
+
 
     static void ConfigureFilterSettings()
     {
