@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Net.NetworkInformation;
 
 class PacketSniffer
 {
@@ -27,16 +28,12 @@ class PacketSniffer
 
     static void StartSniffing(string ipAddress)
     {
-        // Create a raw socket to capture packets
         Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
 
-        // Bind to the provided IP address
         socket.Bind(new IPEndPoint(IPAddress.Parse(ipAddress), 0));
 
-        // Set the socket to receive all IP packets
         socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
 
-        // Enable promiscuous mode (capture all packets)
         byte[] inBytes = new byte[] { 1, 0, 0, 0 };
         byte[] outBytes = new byte[4];
         socket.IOControl(IOControlCode.ReceiveAll, inBytes, outBytes);
@@ -51,6 +48,18 @@ class PacketSniffer
             Console.WriteLine($"Packet Captured: {bytesReceived} bytes");
             Console.WriteLine(Encoding.UTF8.GetString(buffer, 0, bytesReceived));
             Console.WriteLine("======================================\n");
+        }
+    }
+
+    static void ListNetworkInterfaces()
+    {
+        Console.WriteLine("Available Network Interfaces:");
+        int index = 1;
+
+        foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            Console.WriteLine($"{index}. {ni.Name} - {ni.Description} - {ni.NetworkInterfaceType}");
+            index++;
         }
     }
 
