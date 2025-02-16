@@ -239,4 +239,24 @@ class PacketSniffer
             Console.WriteLine($"Color Code Output is now {(colorCodeEnabled ? "ENABLED" : "DISABLED")}.");
         }
     }
+
+    static void SaveSessionLogToFile()
+    {
+        if (sessionLog.Count == 0)
+        {
+            Console.WriteLine("No session log available to save.");
+            return;
+        }
+
+        string fileName = $"PacketSnifferLog_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+        try
+        {
+            File.WriteAllLines(fileName, sessionLog);
+            Console.WriteLine($"Session log saved to {fileName}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving log to file: {ex.Message}");
+        }
+    }
 }
