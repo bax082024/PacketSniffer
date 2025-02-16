@@ -9,6 +9,8 @@ class PacketSniffer
 {
     static List<string> sessionLog = new List<string>();
 
+    static bool colorCodeEnabled = false;
+
     static void Main()
     {
         while (true)
@@ -36,6 +38,9 @@ class PacketSniffer
                     ResetSessionLog();
                     break;
                 case "4":
+                    ConfigureFilterSettings();
+                    break;
+                case "5":
                     Console.WriteLine("Exiting program...");
                     return;
                 default:
