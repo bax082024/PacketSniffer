@@ -19,8 +19,10 @@ class PacketSniffer
         var selectedInterface = NetworkInterface.GetAllNetworkInterfaces()[choice - 1];
         Console.WriteLine($"You selected: {selectedInterface.Name} - {selectedInterface.Description}");
 
-        Console.Write("Enter the network interface to listen on (e.g., 127.0.0.1): ");
-        string ipAddress = Console.ReadLine() ?? "127.0.0.1";
+        // Assign the IP from the selected interface directly
+        string ipAddress = selectedInterface.GetIPProperties().UnicastAddresses
+            .FirstOrDefault(ip => ip.Address.AddressFamily == AddressFamily.InterNetwork)?.Address.ToString()
+            ?? "127.0.0.1";
 
         try
         {
@@ -31,6 +33,7 @@ class PacketSniffer
             Console.WriteLine($"Error: {ex.Message}");
         }
 
+
     }
 
     static void StartSniffing(string ipAddress)
@@ -38,7 +41,6 @@ class PacketSniffer
         Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
 
         socket.Bind(new IPEndPoint(IPAddress.Parse(ipAddress), 0));
-
         socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
 
         byte[] inBytes = new byte[] { 1, 0, 0, 0 };
@@ -53,7 +55,7 @@ class PacketSniffer
         {
             int bytesReceived = socket.Receive(buffer);
             Console.WriteLine($"Packet Captured: {bytesReceived} bytes");
-            Console.WriteLine(Encoding.UTF8.GetString(buffer, 0, bytesReceived));
+            Console.WriteLine(BitConverter.ToString(buffer, 0, bytesReceived));
             Console.WriteLine("======================================\n");
         }
     }
