@@ -75,6 +75,38 @@ class PacketSniffer
         }
     }
 
+    static void StartSniffing(string ipAddress, int protocolChoice)
+    {
+        Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
+        socket.Bind(new IPEndPoint(IPAddress.Parse(ipAddress), 0));
+        socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
+
+        byte[] inBytes = new byte[] { 1, 0, 0, 0 };
+        byte[] outBytes = new byte[4];
+        socket.IOControl(IOControlCode.ReceiveAll, inBytes, outBytes);
+
+        Console.WriteLine($"\nListening on {ipAddress}... Press 'Q' to stop sniffing and return to menu.\n");
+
+        byte[] buffer = new byte[65535];
+
+        while (true)
+        {
+            if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Q)
+            {
+                Console.WriteLine("\nStopping packet sniffing...");
+                sessionLog.Add("Packet sniffing stopped by user.");
+                break;
+            }
+
+            int bytesReceived = socket.Receive(buffer);
+            var packetDetails = DecodePacket(buffer, bytesReceived, protocolChoice);
+            if (!string.IsNullOrEmpty(packetDetails))
+            {
+                sessionLog.Add(packetDetails);  // Add packet details to the session log
+            }
+        }
+    }
+
     static void ListNetworkInterfaces()
     {
         Console.WriteLine("Available Network Interfaces:");
