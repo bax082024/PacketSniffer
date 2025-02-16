@@ -44,25 +44,34 @@ class PacketSniffer
         }
     }
 
-    static void StartSniffing(string ipAddress, int protocolChoice)
+    static void StartPacketSniffing()
     {
-        Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
-        socket.Bind(new IPEndPoint(IPAddress.Parse(ipAddress), 0));
-        socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
+        ListNetworkInterfaces();
+        Console.Write("Enter the number of the network interface to listen on: ");
+        int choice = int.Parse(Console.ReadLine() ?? "1");
 
-        byte[] inBytes = new byte[] { 1, 0, 0, 0 };
-        byte[] outBytes = new byte[4];
-        socket.IOControl(IOControlCode.ReceiveAll, inBytes, outBytes);
+        var selectedInterface = NetworkInterface.GetAllNetworkInterfaces()[choice - 1];
+        string ipAddress = selectedInterface.GetIPProperties().UnicastAddresses
+            .FirstOrDefault(ip => ip.Address.AddressFamily == AddressFamily.InterNetwork)?.Address.ToString()
+            ?? "127.0.0.1";
 
-        Console.WriteLine($"\nListening on {ipAddress}... Press Ctrl+C to stop.\n");
+        Console.WriteLine("\nSelect the protocol to filter:");
+        Console.WriteLine("1. All Protocols");
+        Console.WriteLine("2. TCP");
+        Console.WriteLine("3. UDP");
+        Console.WriteLine("4. ICMP");
+        Console.Write("Enter your choice (1-4): ");
+        int protocolChoice = int.Parse(Console.ReadLine() ?? "1");
 
-        byte[] buffer = new byte[65535];
+        sessionLog.Add($"Started sniffing on {selectedInterface.Name} ({ipAddress}) with filter: {GetProtocolName(protocolChoice)}");
 
-        while (true)
+        try
         {
-            int bytesReceived = socket.Receive(buffer);
-            DecodePacket(buffer, bytesReceived, protocolChoice);
-            Console.WriteLine("======================================\n");
+            StartSniffing(ipAddress, protocolChoice);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
         }
     }
 
