@@ -8,7 +8,6 @@ using System.Collections.Generic;
 class PacketSniffer
 {
     static List<string> sessionLog = new List<string>();
-
     static bool colorCodeEnabled = false;
 
     static void Main()
@@ -44,7 +43,7 @@ class PacketSniffer
                     Console.WriteLine("Exiting program...");
                     return;
                 default:
-                    Console.WriteLine("Invalid choice. Please select 1-4.");
+                    Console.WriteLine("Invalid choice. Please select 1-5.");
                     break;
             }
         }
@@ -214,13 +213,12 @@ class PacketSniffer
     {
         return choice switch
         {
-            2 => 6,   // TCP
-            3 => 17,  // UDP
-            4 => 1,   // ICMP
+            2 => 6,
+            3 => 17,
+            4 => 1,
             _ => 0
         };
     }
-
 
     static void ConfigureFilterSettings()
     {
@@ -236,7 +234,4 @@ class PacketSniffer
             Console.WriteLine($"Color Code Output is now {(colorCodeEnabled ? "ENABLED" : "DISABLED")}.");
         }
     }
-
-
-
 }
