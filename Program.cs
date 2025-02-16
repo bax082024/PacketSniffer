@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Net.NetworkInformation;
 using System.Collections.Generic;
+using System.IO;
 
 class PacketSniffer
 {
@@ -21,9 +22,10 @@ class PacketSniffer
             Console.WriteLine("2. View Session Log");
             Console.WriteLine("3. Reset Session Log");
             Console.WriteLine("4. Filter Settings");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("5. Save Session Log to File");
+            Console.WriteLine("6. Exit");
             Console.Write("Choose an option (1-5): ");
-            string choice = Console.ReadLine() ?? "5";
+            string choice = Console.ReadLine() ?? String.Empty;
 
             switch (choice)
             {
@@ -40,6 +42,9 @@ class PacketSniffer
                     ConfigureFilterSettings();
                     break;
                 case "5":
+                    SaveSessionLogToFile();
+                    break;
+                case "6":
                     Console.WriteLine("Exiting program...");
                     return;
                 default:
@@ -232,6 +237,26 @@ class PacketSniffer
         {
             colorCodeEnabled = !colorCodeEnabled;
             Console.WriteLine($"Color Code Output is now {(colorCodeEnabled ? "ENABLED" : "DISABLED")}.");
+        }
+    }
+
+    static void SaveSessionLogToFile()
+    {
+        if (sessionLog.Count == 0)
+        {
+            Console.WriteLine("No session log available to save.");
+            return;
+        }
+
+        string fileName = $"PacketSnifferLog_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+        try
+        {
+            File.WriteAllLines(fileName, sessionLog);
+            Console.WriteLine($"Session log saved to {fileName}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving log to file: {ex.Message}");
         }
     }
 }
