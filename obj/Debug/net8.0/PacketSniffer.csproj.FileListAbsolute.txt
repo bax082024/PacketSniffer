@@ -1,0 +1,15 @@
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\bin\Debug\net8.0\PacketSniffer.exe
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\bin\Debug\net8.0\PacketSniffer.deps.json
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\bin\Debug\net8.0\PacketSniffer.runtimeconfig.json
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\bin\Debug\net8.0\PacketSniffer.dll
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\bin\Debug\net8.0\PacketSniffer.pdb
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\PacketSniffer.GeneratedMSBuildEditorConfig.editorconfig
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\PacketSniffer.AssemblyInfoInputs.cache
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\PacketSniffer.AssemblyInfo.cs
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\PacketSniffer.csproj.CoreCompileInputs.cache
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\PacketSniffer.sourcelink.json
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\PacketSniffer.dll
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\refint\PacketSniffer.dll
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\PacketSniffer.pdb
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\PacketSniffer.genruntimeconfig.cache
+C:\HjemmeKode\C-Sharp\PacketSniffer\PacketSniffer\obj\Debug\net8.0\ref\PacketSniffer.dll
