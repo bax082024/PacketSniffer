@@ -202,6 +202,20 @@ class PacketSniffer
         return packetDetails.ToString();
     }
 
+    static void ConfigureFilterSettings()
+    {
+        Console.WriteLine("\n===== Filter Settings =====");
+        Console.WriteLine("1. Toggle Color Code Output");
+        Console.WriteLine("2. Back to Main Menu");
+        Console.Write("Choose an option: ");
+
+        string option = Console.ReadLine() ?? "2";
+        if (option == "1")
+        {
+            colorCodeEnabled = !colorCodeEnabled;
+            Console.WriteLine($"Color Code Output is now {(colorCodeEnabled ? "ENABLED" : "DISABLED")}.");
+        }
+    }
 
 
 
