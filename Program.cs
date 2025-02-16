@@ -54,7 +54,7 @@ class PacketSniffer
         {
             int bytesReceived = socket.Receive(buffer);
             Console.WriteLine($"Packet Captured: {bytesReceived} bytes");
-            Console.WriteLine(BitConverter.ToString(buffer, 0, bytesReceived));
+            DecodePacket(buffer, bytesReceived);
             Console.WriteLine("======================================\n");
         }
     }
