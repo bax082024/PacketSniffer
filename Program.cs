@@ -11,7 +11,7 @@ class PacketSniffer
 
     static void Main()
     {
-        while (true)  // Loop to show the main menu
+        while (true)
         {
             Console.WriteLine("=================================");
             Console.WriteLine("      Packet Sniffer Tool        ");
@@ -19,9 +19,10 @@ class PacketSniffer
             Console.WriteLine("1. Start Packet Sniffing");
             Console.WriteLine("2. View Session Log");
             Console.WriteLine("3. Reset Session Log");
-            Console.WriteLine("4. Exit");
-            Console.Write("Choose an option (1-4): ");
-            string choice = Console.ReadLine() ?? "4";
+            Console.WriteLine("4. Filter Settings");
+            Console.WriteLine("5. Exit");
+            Console.Write("Choose an option (1-5): ");
+            string choice = Console.ReadLine() ?? "5";
 
             switch (choice)
             {
@@ -102,7 +103,7 @@ class PacketSniffer
             var packetDetails = DecodePacket(buffer, bytesReceived, protocolChoice);
             if (!string.IsNullOrEmpty(packetDetails))
             {
-                sessionLog.Add(packetDetails);  // Add packet details to the session log
+                sessionLog.Add(packetDetails);
             }
         }
     }
@@ -171,10 +172,9 @@ class PacketSniffer
             _ => "Unknown"
         };
 
-        // Filter packets based on user choice
         if (protocolChoice != 1 && protocolChoice != protocol)
         {
-            return string.Empty;  // Skip this packet if it doesn't match the filter
+            return string.Empty;
         }
 
         var packetDetails = new StringBuilder();
