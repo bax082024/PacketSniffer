@@ -19,7 +19,6 @@ class PacketSniffer
         var selectedInterface = NetworkInterface.GetAllNetworkInterfaces()[choice - 1];
         Console.WriteLine($"You selected: {selectedInterface.Name} - {selectedInterface.Description}");
 
-        // Assign the IP from the selected interface directly
         string ipAddress = selectedInterface.GetIPProperties().UnicastAddresses
             .FirstOrDefault(ip => ip.Address.AddressFamily == AddressFamily.InterNetwork)?.Address.ToString()
             ?? "127.0.0.1";
@@ -71,6 +70,46 @@ class PacketSniffer
             index++;
         }
     }
+
+    static void DecodePacket(byte[] buffer, int bytesReceived)
+    {
+        // Extract the IP header (first 20 bytes)
+        var ipHeader = new byte[20];
+        Array.Copy(buffer, 0, ipHeader, 0, 20);
+
+        // Extract Source and Destination IPs from header
+        string sourceIP = $"{ipHeader[12]}.{ipHeader[13]}.{ipHeader[14]}.{ipHeader[15]}";
+        string destIP = $"{ipHeader[16]}.{ipHeader[17]}.{ipHeader[18]}.{ipHeader[19]}";
+
+        // Protocol field is at byte 9
+        int protocol = ipHeader[9];
+
+        string protocolName = protocol switch
+        {
+            1 => "ICMP",
+            6 => "TCP",
+            17 => "UDP",
+            _ => "Unknown"
+        };
+
+        Console.WriteLine("========== Packet Details ==========");
+        Console.WriteLine($"Source IP: {sourceIP}");
+        Console.WriteLine($"Destination IP: {destIP}");
+        Console.WriteLine($"Protocol: {protocolName}");
+        Console.WriteLine($"Packet Size: {bytesReceived} bytes");
+
+        // If TCP or UDP, print port numbers
+        if (protocol == 6 || protocol == 17)
+        {
+            int sourcePort = (buffer[20] << 8) + buffer[21];
+            int destPort = (buffer[22] << 8) + buffer[23];
+            Console.WriteLine($"Source Port: {sourcePort}");
+            Console.WriteLine($"Destination Port: {destPort}");
+        }
+
+        Console.WriteLine("=====================================\n");
+    }
+
 
 
 
