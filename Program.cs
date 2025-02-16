@@ -107,6 +107,23 @@ class PacketSniffer
         }
     }
 
+    static void DisplaySessionLog()
+    {
+        Console.WriteLine("\n========== Session Log ==========");
+        if (sessionLog.Count == 0)
+        {
+            Console.WriteLine("No logs available.");
+        }
+        else
+        {
+            foreach (var entry in sessionLog)
+            {
+                Console.WriteLine(entry);
+            }
+        }
+        Console.WriteLine("=================================\n");
+    }
+
     static void ListNetworkInterfaces()
     {
         Console.WriteLine("Available Network Interfaces:");
