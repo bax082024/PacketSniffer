@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Net.NetworkInformation;
 using System.Collections.Generic;
+using System.IO;
 
 class PacketSniffer
 {
@@ -21,9 +22,10 @@ class PacketSniffer
             Console.WriteLine("2. View Session Log");
             Console.WriteLine("3. Reset Session Log");
             Console.WriteLine("4. Filter Settings");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("5. Save Session Log to File");
+            Console.WriteLine("6. Exit");
             Console.Write("Choose an option (1-5): ");
-            string choice = Console.ReadLine() ?? "5";
+            string choice = Console.ReadLine() ?? String.Empty;
 
             switch (choice)
             {
