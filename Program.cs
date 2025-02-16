@@ -42,6 +42,9 @@ class PacketSniffer
                     ConfigureFilterSettings();
                     break;
                 case "5":
+                    SaveSessionLogToFile();
+                    break;
+                case "6":
                     Console.WriteLine("Exiting program...");
                     return;
                 default:
