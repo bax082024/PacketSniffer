@@ -53,6 +53,9 @@ class PacketSniffer
                     LoadSessionLogFromFile();
                     break;
                 case "7":
+                    SetTextColor();
+                    break;
+                case "8":
                     Console.WriteLine("Exiting program...");
                     return;
                 default:
