@@ -10,6 +10,8 @@ A simple console-based Packet Sniffer Tool written in C# that captures and analy
 The author is not responsible for any misuse of this tool. 
 Please ensure you have proper authorization before using this tool to capture network traffic.**
 
+Feel free to contribute or modify the project!
+
 ## Features 
 
 - Start Packet Sniffing: Capture packets on selected network interfaces.
