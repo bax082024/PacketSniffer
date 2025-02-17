@@ -11,6 +11,7 @@ class PacketSniffer
     static string logFilePath = "PacketSnifferLog.txt";
 
     static List<string> sessionLog = new List<string>();
+    static List<int> packetSizes = new List<int>();
     static bool colorCodeEnabled = false;
 
     static string? ipFilter = null;
@@ -69,6 +70,13 @@ class PacketSniffer
 
     static void StartPacketSniffing()
     {
+        Console.Write("Enter IP address to filter (or press Enter to capture all): ");
+        ipFilter = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(ipFilter))
+        {
+            ipFilter = null;
+        }
+
         ListNetworkInterfaces();
         Console.Write("Enter the number of the network interface to listen on: ");
         int choice = int.Parse(Console.ReadLine() ?? "1");
@@ -200,6 +208,11 @@ class PacketSniffer
         };
 
         if (protocolChoice != 1 && protocol != GetProtocolNumber(protocolChoice))
+        {
+            return string.Empty;
+        }
+
+        if (ipFilter != null && sourceIP != ipFilter && destIP != ipFilter)
         {
             return string.Empty;
         }
