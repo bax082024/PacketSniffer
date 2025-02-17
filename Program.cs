@@ -387,6 +387,26 @@ class PacketSniffer
         Console.WriteLine($"\nText color set to {Console.ForegroundColor}\n");
     }
 
+    static void DisplayPacketSizeAnalysis()
+    {
+        if (packetSizes.Count == 0)
+        {
+            Console.WriteLine("No packets captured yet.");
+            return;
+        }
+
+        int minSize = packetSizes.Min();
+        int maxSize = packetSizes.Max();
+        double avgSize = packetSizes.Average();
+
+        Console.WriteLine("\n======= Packet Size Analysis =======");
+        Console.WriteLine($"Total Packets: {packetSizes.Count}");
+        Console.WriteLine($"Minimum Packet Size: {minSize} bytes");
+        Console.WriteLine($"Maximum Packet Size: {maxSize} bytes");
+        Console.WriteLine($"Average Packet Size: {avgSize:F2} bytes");
+        Console.WriteLine("====================================\n");
+    }
+
 
 
 }
