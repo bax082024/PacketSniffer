@@ -242,7 +242,8 @@ class PacketSniffer
             log.AppendLine($"Source Port: {sourcePort}");
             log.AppendLine($"Destination Port: {destPort}");
         }
-
+        packetSizes.Add(bytesReceived);
+        
         Console.WriteLine(log.ToString());
         Console.ResetColor();
         Console.WriteLine("=====================================\n");
