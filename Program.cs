@@ -109,6 +109,7 @@ class PacketSniffer
         Console.WriteLine($"\nListening on {ipAddress}... Press 'Q' to stop sniffing and return to menu.\n");
 
         byte[] buffer = new byte[65535];
+        int packetCount = 0;
 
         while (true)
         {
@@ -120,6 +121,8 @@ class PacketSniffer
             }
 
             int bytesReceived = socket.Receive(buffer);
+            packetCount++;
+            Console.WriteLine($"\nPackets Captured: {packetCount}");
             var packetDetails = DecodePacket(buffer, bytesReceived, protocolChoice);
             if (!string.IsNullOrEmpty(packetDetails))
             {
