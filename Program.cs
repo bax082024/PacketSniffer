@@ -8,8 +8,13 @@ using System.IO;
 
 class PacketSniffer
 {
+    static string logFilePath = "PacketSnifferLog.txt";
+
     static List<string> sessionLog = new List<string>();
+    static List<int> packetSizes = new List<int>();
     static bool colorCodeEnabled = false;
+
+    static string? ipFilter = null;
 
     static void Main()
     {
@@ -22,9 +27,13 @@ class PacketSniffer
             Console.WriteLine("2. View Session Log");
             Console.WriteLine("3. Reset Session Log");
             Console.WriteLine("4. Filter Settings");
-            Console.WriteLine("5. Save Session Log to File");
-            Console.WriteLine("6. Exit");
-            Console.Write("Choose an option (1-5): ");
+            Console.WriteLine("5. Export Session Log to File");
+            Console.WriteLine("6. Load Session Log from File");
+            Console.WriteLine("7. Text Color Settings");
+            Console.WriteLine("8. View Packet Size Analysis");
+
+            Console.WriteLine("\n9. Exit");
+            Console.WriteLine("\nChoose an option (1-9): ");
             string choice = Console.ReadLine() ?? String.Empty;
 
             switch (choice)
@@ -42,9 +51,18 @@ class PacketSniffer
                     ConfigureFilterSettings();
                     break;
                 case "5":
-                    SaveSessionLogToFile();
+                    ExportSessionLog();
                     break;
                 case "6":
+                    LoadSessionLogFromFile();
+                    break;
+                case "7":
+                    SetTextColor();
+                    break;
+                case "8": 
+                    DisplayPacketSizeAnalysis(); 
+                    break;
+                case "9":
                     Console.WriteLine("Exiting program...");
                     return;
                 default:
@@ -56,6 +74,13 @@ class PacketSniffer
 
     static void StartPacketSniffing()
     {
+        Console.Write("Enter IP address to filter (or press Enter to capture all): ");
+        ipFilter = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(ipFilter))
+        {
+            ipFilter = null;
+        }
+
         ListNetworkInterfaces();
         Console.Write("Enter the number of the network interface to listen on: ");
         int choice = int.Parse(Console.ReadLine() ?? "1");
@@ -98,6 +123,7 @@ class PacketSniffer
         Console.WriteLine($"\nListening on {ipAddress}... Press 'Q' to stop sniffing and return to menu.\n");
 
         byte[] buffer = new byte[65535];
+        int packetCount = 0;
 
         while (true)
         {
@@ -109,6 +135,10 @@ class PacketSniffer
             }
 
             int bytesReceived = socket.Receive(buffer);
+            packetCount++;
+            
+            Console.WriteLine($"\nPackets Captured: {packetCount}\n");
+            
             var packetDetails = DecodePacket(buffer, bytesReceived, protocolChoice);
             if (!string.IsNullOrEmpty(packetDetails))
             {
@@ -186,6 +216,11 @@ class PacketSniffer
             return string.Empty;
         }
 
+        if (ipFilter != null && sourceIP != ipFilter && destIP != ipFilter)
+        {
+            return string.Empty;
+        }
+
         if (colorCodeEnabled)
         {
             if (protocol == 6) Console.ForegroundColor = ConsoleColor.Cyan;
@@ -207,7 +242,8 @@ class PacketSniffer
             log.AppendLine($"Source Port: {sourcePort}");
             log.AppendLine($"Destination Port: {destPort}");
         }
-
+        packetSizes.Add(bytesReceived);
+        
         Console.WriteLine(log.ToString());
         Console.ResetColor();
         Console.WriteLine("=====================================\n");
@@ -240,23 +276,137 @@ class PacketSniffer
         }
     }
 
-    static void SaveSessionLogToFile()
+    static void ExportSessionLog()
     {
         if (sessionLog.Count == 0)
         {
-            Console.WriteLine("No session log available to save.");
+            Console.WriteLine("No session log to export.");
             return;
         }
 
-        string fileName = $"PacketSnifferLog_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+        Console.WriteLine("Choose export format:");
+        Console.WriteLine("1. TXT");
+        Console.WriteLine("2. CSV");
+        Console.WriteLine("3. JSON");
+        Console.Write("Enter choice (1-3): ");
+        string formatChoice = Console.ReadLine() ?? "1";
+
+        Console.Write("Enter the path where you want to save the file: ");
+        string path = Console.ReadLine() ?? "./SessionLog";
+
         try
         {
-            File.WriteAllLines(fileName, sessionLog);
-            Console.WriteLine($"Session log saved to {fileName}");
+            if (formatChoice == "1")
+            {
+                File.WriteAllLines(path + ".txt", sessionLog);
+                Console.WriteLine("Session log exported as TXT.");
+            }
+            else if (formatChoice == "2")
+            {
+                File.WriteAllText(path + ".csv", string.Join(",", sessionLog));
+                Console.WriteLine("Session log exported as CSV.");
+            }
+            else if (formatChoice == "3")
+            {
+                string json = System.Text.Json.JsonSerializer.Serialize(sessionLog);
+                File.WriteAllText(path + ".json", json);
+                Console.WriteLine("Session log exported as JSON.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice.");
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error saving log to file: {ex.Message}");
+            Console.WriteLine($"Error exporting session log: {ex.Message}");
         }
     }
+
+    static void LoadSessionLogFromFile()
+    {
+        Console.Write("Enter the path of the session log file to load: ");
+        string filePath = Console.ReadLine() ?? string.Empty;
+
+        if (File.Exists(filePath))
+        {
+            try
+            {
+                sessionLog = new List<string>(File.ReadAllLines(filePath));
+                Console.WriteLine("Session log loaded successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to load session log: {ex.Message}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("File not found. Please check the path and try again.");
+        }
+    }
+
+    static void SetTextColor()
+    {
+        Console.WriteLine("\nChoose a text color:");
+        Console.WriteLine("1. White");
+        Console.WriteLine("2. Cyan");
+        Console.WriteLine("3. Yellow");
+        Console.WriteLine("4. Green");
+        Console.WriteLine("5. Magenta");
+        Console.WriteLine("6. Red");
+        Console.Write("Enter your choice (1-6): ");
+
+        string colorChoice = Console.ReadLine() ?? "1";
+
+        switch (colorChoice)
+        {
+            case "1":
+                Console.ForegroundColor = ConsoleColor.White;
+                break;
+            case "2":
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                break;
+            case "3":
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                break;
+            case "4":
+                Console.ForegroundColor = ConsoleColor.Green;
+                break;
+            case "5":
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                break;
+            case "6":
+                Console.ForegroundColor = ConsoleColor.Red;
+                break;
+            default:
+                Console.ForegroundColor = ConsoleColor.White;
+                break;
+        }
+
+        Console.WriteLine($"\nText color set to {Console.ForegroundColor}\n");
+    }
+
+    static void DisplayPacketSizeAnalysis()
+    {
+        if (packetSizes.Count == 0)
+        {
+            Console.WriteLine("No packets captured yet.");
+            return;
+        }
+
+        int minSize = packetSizes.Min();
+        int maxSize = packetSizes.Max();
+        double avgSize = packetSizes.Average();
+
+        Console.WriteLine("\n======= Packet Size Analysis =======");
+        Console.WriteLine($"Total Packets: {packetSizes.Count}");
+        Console.WriteLine($"Minimum Packet Size: {minSize} bytes");
+        Console.WriteLine($"Maximum Packet Size: {maxSize} bytes");
+        Console.WriteLine($"Average Packet Size: {avgSize:F2} bytes");
+        Console.WriteLine("====================================\n");
+    }
+
+
+
 }
