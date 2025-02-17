@@ -263,4 +263,26 @@ class PacketSniffer
             Console.WriteLine($"Error saving log to file: {ex.Message}");
         }
     }
+
+    static void LoadSessionLog()
+    {
+        if (File.Exists(logFilePath))
+        {
+            try
+            {
+                sessionLog = new List<string>(File.ReadAllLines(logFilePath));
+                Console.WriteLine("Previous session log loaded successfully.\n");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading log: {ex.Message}\n");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No previous session log found.\n");
+        }
+    }
+
+
 }
