@@ -321,5 +321,47 @@ class PacketSniffer
         }
     }
 
+    static void SetTextColor()
+    {
+        Console.WriteLine("\nChoose a text color:");
+        Console.WriteLine("1. White");
+        Console.WriteLine("2. Cyan");
+        Console.WriteLine("3. Yellow");
+        Console.WriteLine("4. Green");
+        Console.WriteLine("5. Magenta");
+        Console.WriteLine("6. Red");
+        Console.Write("Enter your choice (1-6): ");
+
+        string colorChoice = Console.ReadLine() ?? "1";
+
+        switch (colorChoice)
+        {
+            case "1":
+                Console.ForegroundColor = ConsoleColor.White;
+                break;
+            case "2":
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                break;
+            case "3":
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                break;
+            case "4":
+                Console.ForegroundColor = ConsoleColor.Green;
+                break;
+            case "5":
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                break;
+            case "6":
+                Console.ForegroundColor = ConsoleColor.Red;
+                break;
+            default:
+                Console.ForegroundColor = ConsoleColor.White;
+                break;
+        }
+
+        Console.WriteLine($"\nText color set to {Console.ForegroundColor}\n");
+    }
+
+
 
 }
