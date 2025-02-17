@@ -20,6 +20,8 @@ A simple console-based Packet Sniffer Tool written in C# that captures and analy
 
 - Text Color Settings: Change the console text color from a selection of colors
 
+- Packet Size Analysis: Display total, minimum, maximum, and average packet sizes.
+
 ---
 
 ## Installation
@@ -32,4 +34,8 @@ A simple console-based Packet Sniffer Tool written in C# that captures and analy
 
 ---
 
+## Contact
 
+For questions or feedback, please contact :
+
+- bax082024@gmail.com
