@@ -45,7 +45,7 @@ class PacketSniffer
                     ConfigureFilterSettings();
                     break;
                 case "5":
-                    SaveSessionLogToFile();
+                    ExportSessionLog();
                     break;
                 case "6":
                     LoadSessionLog();
@@ -246,23 +246,50 @@ class PacketSniffer
         }
     }
 
-    static void SaveSessionLogToFile()
+    static void ExportSessionLog()
     {
         if (sessionLog.Count == 0)
         {
-            Console.WriteLine("No session log available to save.");
+            Console.WriteLine("No session log to export.");
             return;
         }
 
-        string fileName = $"PacketSnifferLog_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+        Console.WriteLine("Choose export format:");
+        Console.WriteLine("1. TXT");
+        Console.WriteLine("2. CSV");
+        Console.WriteLine("3. JSON");
+        Console.Write("Enter choice (1-3): ");
+        string formatChoice = Console.ReadLine() ?? "1";
+
+        Console.Write("Enter the path where you want to save the file: ");
+        string path = Console.ReadLine() ?? "./SessionLog";
+
         try
         {
-            File.WriteAllLines(fileName, sessionLog);
-            Console.WriteLine($"Session log saved to {fileName}");
+            if (formatChoice == "1")
+            {
+                File.WriteAllLines(path + ".txt", sessionLog);
+                Console.WriteLine("Session log exported as TXT.");
+            }
+            else if (formatChoice == "2")
+            {
+                File.WriteAllText(path + ".csv", string.Join(",", sessionLog));
+                Console.WriteLine("Session log exported as CSV.");
+            }
+            else if (formatChoice == "3")
+            {
+                string json = System.Text.Json.JsonSerializer.Serialize(sessionLog);
+                File.WriteAllText(path + ".json", json);
+                Console.WriteLine("Session log exported as JSON.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice.");
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error saving log to file: {ex.Message}");
+            Console.WriteLine($"Error exporting session log: {ex.Message}");
         }
     }
 
