@@ -8,6 +8,8 @@ using System.IO;
 
 class PacketSniffer
 {
+    static string logFilePath = "PacketSnifferLog.txt";
+
     static List<string> sessionLog = new List<string>();
     static bool colorCodeEnabled = false;
 
