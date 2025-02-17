@@ -13,6 +13,8 @@ class PacketSniffer
     static List<string> sessionLog = new List<string>();
     static bool colorCodeEnabled = false;
 
+    static string? ipFilter = null;
+
     static void Main()
     {
         while (true)
