@@ -22,3 +22,14 @@ A simple console-based Packet Sniffer Tool written in C# that captures and analy
 
 ---
 
+## Installation
+
+1. Clone Repository :
+	- https://github.com/bax082024/PacketSniffer.git
+2. cd PacketSniffer
+3. dotnet build
+4. Follow instructions
+
+---
+
+
