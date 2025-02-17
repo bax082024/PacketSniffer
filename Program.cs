@@ -48,7 +48,7 @@ class PacketSniffer
                     ExportSessionLog();
                     break;
                 case "6":
-                    LoadSessionLog();
+                    LoadSessionLogFromFile();
                     break;
                 case "7":
                     Console.WriteLine("Exiting program...");
@@ -293,23 +293,26 @@ class PacketSniffer
         }
     }
 
-    static void LoadSessionLog()
+    static void LoadSessionLogFromFile()
     {
-        if (File.Exists(logFilePath))
+        Console.Write("Enter the path of the session log file to load: ");
+        string filePath = Console.ReadLine() ?? string.Empty;
+
+        if (File.Exists(filePath))
         {
             try
             {
-                sessionLog = new List<string>(File.ReadAllLines(logFilePath));
-                Console.WriteLine("Previous session log loaded successfully.\n");
+                sessionLog = new List<string>(File.ReadAllLines(filePath));
+                Console.WriteLine("Session log loaded successfully.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading log: {ex.Message}\n");
+                Console.WriteLine($"Failed to load session log: {ex.Message}");
             }
         }
         else
         {
-            Console.WriteLine("No previous session log found.\n");
+            Console.WriteLine("File not found. Please check the path and try again.");
         }
     }
 
