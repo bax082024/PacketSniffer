@@ -4,7 +4,7 @@ A simple console-based Packet Sniffer Tool written in C# that captures and analy
 
 ---
 
-## Disclaimer
+## Disclaimer :rotating_light:
 
 **This tool is intended for educational purposes and personal use only. 
 The author is not responsible for any misuse of this tool. 
