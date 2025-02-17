@@ -32,8 +32,8 @@ class PacketSniffer
             Console.WriteLine("7. Text Color Settings");
             Console.WriteLine("8. View Packet Size Analysis");
 
-            Console.WriteLine("\n8. Exit");
-            Console.WriteLine("\nChoose an option (1-8): ");
+            Console.WriteLine("\n9. Exit");
+            Console.WriteLine("\nChoose an option (1-9): ");
             string choice = Console.ReadLine() ?? String.Empty;
 
             switch (choice)
