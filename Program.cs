@@ -122,7 +122,9 @@ class PacketSniffer
 
             int bytesReceived = socket.Receive(buffer);
             packetCount++;
-            Console.WriteLine($"\nPackets Captured: {packetCount}");
+            
+            Console.WriteLine($"\nPackets Captured: {packetCount}\n");
+            
             var packetDetails = DecodePacket(buffer, bytesReceived, protocolChoice);
             if (!string.IsNullOrEmpty(packetDetails))
             {
