@@ -24,7 +24,7 @@ class PacketSniffer
             Console.WriteLine("2. View Session Log");
             Console.WriteLine("3. Reset Session Log");
             Console.WriteLine("4. Filter Settings");
-            Console.WriteLine("5. Save Session Log to File");
+            Console.WriteLine("5. Export Session Log to File");
             Console.WriteLine("6. Load Session Log from File");
             Console.WriteLine("7. Exit");
             Console.Write("Choose an option (1-7): ");
