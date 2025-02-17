@@ -20,5 +20,22 @@ A simple console-based Packet Sniffer Tool written in C# that captures and analy
 
 - Text Color Settings: Change the console text color from a selection of colors
 
+- Packet Size Analysis: Display total, minimum, maximum, and average packet sizes.
+
 ---
 
+## Installation
+
+1. Clone Repository :
+	- https://github.com/bax082024/PacketSniffer.git
+2. cd PacketSniffer
+3. dotnet build
+4. Follow instructions
+
+---
+
+## Contact
+
+For questions or feedback, please contact :
+
+- bax082024@gmail.com
