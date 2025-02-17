@@ -46,6 +46,9 @@ class PacketSniffer
                     SaveSessionLogToFile();
                     break;
                 case "6":
+                    LoadSessionLog();
+                    break;
+                case "7":
                     Console.WriteLine("Exiting program...");
                     return;
                 default:
