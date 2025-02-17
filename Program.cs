@@ -59,7 +59,10 @@ class PacketSniffer
                 case "7":
                     SetTextColor();
                     break;
-                case "8":
+                case "8": 
+                    DisplayPacketSizeAnalysis(); 
+                    break;
+                case "9":
                     Console.WriteLine("Exiting program...");
                     return;
                 default:
