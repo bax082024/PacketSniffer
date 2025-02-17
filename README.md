@@ -10,7 +10,7 @@ A simple console-based Packet Sniffer Tool written in C# that captures and analy
 The author is not responsible for any misuse of this tool. 
 Please ensure you have proper authorization before using this tool to capture network traffic.**
 
-Feel free to contribute or modify the project!
+---
 
 ## Features 
 
@@ -41,6 +41,19 @@ Feel free to contribute or modify the project!
 4. Follow instructions
 
 ---
+
+## How to use
+
+1. Run the application with **ADMINISTARTOR** privileges.
+2. Follow the on-screen menu to start capturing packets, view logs, export data, and more.
+3. Press 'Q' during sniffing to stop and return to the main menu.
+
+---
+
+## Exporting Logs
+
+- Supported formats: TXT, CSV, JSON
+- Specify the file path when exporting logs.
 
 ## Contact
 
