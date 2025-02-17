@@ -30,6 +30,7 @@ class PacketSniffer
             Console.WriteLine("5. Export Session Log to File");
             Console.WriteLine("6. Load Session Log from File");
             Console.WriteLine("7. Text Color Settings");
+            Console.WriteLine("8. View Packet Size Analysis");
 
             Console.WriteLine("\n8. Exit");
             Console.WriteLine("\nChoose an option (1-8): ");
